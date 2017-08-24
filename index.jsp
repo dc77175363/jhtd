@@ -120,7 +120,7 @@ if(session.getAttribute("flag")==null && user==null && mima==null){
     <div class="loginbox">
     <form action="" method="post">
         <ul>
-        	<li><select name="project">
+        	<li><select style="border: 1px solid #aaa;color: #333;outline: none;" name="project">
 <%
 sql="select * from project where state=1 order by id desc";
 rs=stmt.executeQuery(sql);
@@ -190,7 +190,7 @@ return;
     <title>君海测试管理系统</title>
     <meta charset="utf-8">
 </head>
-<frameset rows="88,*" cols="*" frameborder="no" border="0" framespacing="0">
+<frameset rows="80,*" cols="*" frameborder="no" border="0" framespacing="0">
     <frame src="top.jsp" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame"/>
     <frameset cols="187,*" frameborder="no" border="0" framespacing="0">
         <frame src="left.jsp" name="leftFrame" scrolling="yes" noresize="noresize" id="leftFrame" title="leftFrame"/>

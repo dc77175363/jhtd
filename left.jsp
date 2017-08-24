@@ -31,9 +31,9 @@
 
       .leftNav {
 
-        width: 20%;
+        width: 100%;
 
-        //height:500px;
+        /*height:500px;*/
         height:100%;
 
         border:#B9E0F7 1px solid;
@@ -41,7 +41,7 @@
         margin-left: 0%;
 
         margin-right: 1%;
-
+		box-sizing: border-box;
     }
 
       #footer {
@@ -144,7 +144,7 @@
 
       margin-right: 0px;
 
-      width: 15px;
+     // width: 15px;
 
     }
 
@@ -184,6 +184,9 @@
       cursor: pointer;
 
     }
+    .category:hover{
+    	background-color: #eee;
+    }
   </style>
 	
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -203,6 +206,7 @@ var imgMinus = new Image();
 
 imgMinus.src="images/close.jpg";
 imgMinus.src="images/open.jpg";
+
 //父节点展开事件
 
 function expandCollapse(el)
@@ -227,27 +231,25 @@ function expandCollapse(el)
 
         child = el.childNodes[i];
 
-        if (child.src)
+        if (child.className=="category")
 
         {
 
-            imgEl = child;
+            imgEl = child.children[0];
 
         }
 
-        else if (child.className == "treeSubnodesHidden")
+        if (child.className == "treeSubnodesHidden")
 
         {
-
             child.className = "treeSubnodes";//原来若隐藏，则展开
 
             imgEl.src = imgMinus.src;//更换图片
-
             break;
 
         }
 
-        else if (child.className == "treeSubnodes")
+        if (child.className == "treeSubnodes")
 
         {
 
@@ -391,7 +393,7 @@ function setSubNodeClass(el, nodeName, className)
     
     
 </head>
-<body style="background:#f0f9fd;">
+<body style="background:#f0f9fd;min-width: auto;width: 187px;">
 
 <div class="leftNav">
 

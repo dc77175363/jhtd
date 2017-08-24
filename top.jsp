@@ -1,9 +1,9 @@
-<%@ page contentType="text/html;charset=GB2312" %>
+<%@ page contentType="text/html;charset=utf-8" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title></title>
-    <meta charset="GB2312">
+    <meta charset="utf-8">
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
     <script language="JavaScript" src="js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript">
@@ -17,13 +17,13 @@
     </script>
 </head>
 <body style="background:url(images/topbg.gif) repeat-x;">
-<div class="topleft">
-    <a href="index.jsp" target="_parent"><img src="images/logo.png" title="系统首页"/></a>
+<div class="topleft" style="height: 80px;">
+    <a href="index.jsp" target="_parent"><img style="margin-top: 5px;" src="images/logo.png" title="鍚涙捣娓告垙"/></a>
 </div>
-<div class="topright">
-    <div class="user">
+<div class="topright" style="height: 80px;">
+    <div class="user" style="margin-top: 25px;">
         <span><%=session.getAttribute("user")%></span>
-        <i><a href="logout.jsp" target="_parent">退出</a></i>
+        <i style="margin-right: 10px;"><a href="logout.jsp" target="_parent">閫�鍑�</a></i>
     </div>
 </div>
 </body>

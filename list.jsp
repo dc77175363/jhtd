@@ -37,6 +37,7 @@
 %>
 <html>
 	<head>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
 	<style type="text/css">
 
       /*主页面样式*/
@@ -195,6 +196,10 @@
       cursor: pointer;
 
     }
+    table td{
+    	border-color: #999 !important;
+    	font-size: 14px;
+    }
   </style>
 	
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -238,15 +243,15 @@ function expandCollapse(el)
 
         child = el.childNodes[i];
 
-        if (child.src)
+        if (child.className=="category")
 
         {
 
-            imgEl = child;
+            imgEl = child.children[0];
 
         }
 
-        else if (child.className == "treeSubnodesHidden")
+        if (child.className == "treeSubnodesHidden")
 
         {
 
@@ -258,7 +263,7 @@ function expandCollapse(el)
 
         }
 
-        else if (child.className == "treeSubnodes")
+        if (child.className == "treeSubnodes")
 
         {
 
@@ -367,7 +372,7 @@ function setSubNodeClass(el, nodeName, className)
 		
 		
 			function newfold(){
-				var name = prompt("输入文件名", ""); //将输入的内容赋给变量 name ，  
+				var name = prompt("输入目录名称", ""); //将输入的内容赋给变量 name ，  
   
         //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
 	        if (name)//如果返回的有内容  
@@ -595,9 +600,11 @@ function setSubNodeClass(el, nodeName, className)
 					document.getElementById("<%=id%>newtr").style.display="";
 					if("<%=type%>"=="tc"){
 						//alert("tc")
-							document.getElementById("foldlisttr").style.display="none"			
+							document.getElementById("foldlisttr").style.display="none"	
+							document.getElementById("foldlisttc").style.display=""			
 					}else{
 						//alert("tr")
+						document.getElementById("foldlisttr").style.display=""
 						document.getElementById("foldlisttc").style.display="none"		
 					}
 					document.getElementById("dowith").innerHTML="移动到";
@@ -716,15 +723,16 @@ function setSubNodeClass(el, nodeName, className)
 		if(rs.next()){
 		%>
 		
-		<div>当前位置:<%=project_name%>><%=location%>><input type="text" id="fold_name" value="<%=rs.getString("name")%>" onchange="updatefold()"/></div>
+		<div class="breadcrumb" style="margin-bottom: 5px;">当前位置：<%=project_name%> > <%=location%> > <input type="text" id="fold_name" value="<%=rs.getString("name")%>" onchange="updatefold()"/></div>
 		<%}%>
-		<table border=1>
+		<div class="container-fluid">
+		<table border="0" width="360" height="60">
 			<tr>
-				<td><a onclick='newfold()'>新增文件夹</a></td>
+				<td><a class="btn btn-primary" onclick='newfold()'>新增目录</a></td>
 				<!--tc可以新增测试案例-->
 				<%if(type.equals("tc")){%>
 				
-				<td><a onClick='document.getElementById("<%=id%>newtc").style.display="";set_tc_id()'>新增用例</a>
+				<td><a class="btn btn-primary" onClick='document.getElementById("<%=id%>newtc").style.display="";set_tc_id()'>新增用例</a>
 					<script language="javascript">   
 							document.body.onkeypress = function(e){
 							
@@ -738,21 +746,21 @@ function setSubNodeClass(el, nodeName, className)
 							} 
 					 </script>
 					<div id="<%=id%>newtc" style="display: none;width:400px; height:250px; border:0px solid black;position:fixed;top:20%;left:10%;background-color:#FFFFFF;" >
-					<table border=1>
+					<table  class="table table-bordered table-hover text-center" style="background: #fff;">
 						<tr>
 							<td>用例ID</td>
-							<td><input type="text" id="tc_id" value=""/></td>
+							<td><input class="form-control" type="text" id="tc_id" value=""/></td>
 						</tr>		
 						<tr>
 							<td>用例名称</td>
-							<td><input type="text" id="name" value="" /></td>
+							<td><input class="form-control" type="text" id="name" value="" /></td>
 						</tr>	
 						<tr>
 							<td>描述or预期</td>
-							<td><textarea id="description" cols=30 rows=5></textarea></td>
+							<td><textarea class="form-control" id="description" cols=30 rows=5></textarea></td>
 						</tr>
 						<tr>
-							<td colspan="2"  align="center"><a onclick='newtestcase()'>提交</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a onClick='document.getElementById("<%=id%>newtc").style.display="none"'>取消</a></td>
+							<td colspan="2"  align="center"><a class="btn btn-primary" onclick='newtestcase()'>提交</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a class="btn btn-default" onClick='document.getElementById("<%=id%>newtc").style.display="none"'>取消</a></td>
 						</tr>
 					</table>
 					 <script language="javascript">   
@@ -770,10 +778,13 @@ function setSubNodeClass(el, nodeName, className)
 					<%}%>
 			<!--tr可以新增测试集合-->
 				<%if(type.equals("tr")){%>
-				<td><a onClick='selectfoldstart()'>选择执行案例</a>
+				<td><a class="btn btn-primary" onClick='selectfoldstart()'>选择执行案例</a>
 				<%}%>
 					<div id="<%=id%>newtr" style="display: none;width:400px; height:100%; border:1px solid black;position:fixed;top:1%;left:60%;background-color:#FFFFFF;overflow:auto" >
-							<div><input type="text" id="tc_fold_id" value="" size=8/><input type="text" id="tc_fold_name" value="" size=10/><a onclick='newtestrun()' id="dowith">添加</a></div>
+							<div style="padding: 4px;">
+								<input type="text" id="tc_fold_id" value="" size=8/>
+								<input type="text" id="tc_fold_name" value="" size=10/>
+								<a style="margin-left: 4px;" onclick='newtestrun()' id="dowith">添加</a></div>
 							<div class="leftNav">
 							
 							    <div id="samplesToc">
@@ -798,13 +809,13 @@ function setSubNodeClass(el, nodeName, className)
 			              </div>   
 					</td>
 					
-				<td><a onclick='location.replace(location)'>刷新</a></td>
-				<td><a onClick='movefoldstart()'>移动到</a></td>
+				<td><a  class="btn btn-primary" onClick='movefoldstart()'>移动到</a></td>
+				<td><a  class="btn btn-success" onclick='location.replace(location)'>刷新</a></td>
 			</tr>
 			
 			</table>
 			<%if(type.equals("tc")){%>
-			<table border=1>
+			<table class="table table-bordered table-hover text-center">
 						<tr>
 							<td>序号</td>
 							<td>tc_id</td>
@@ -825,14 +836,14 @@ function setSubNodeClass(el, nodeName, className)
         %>
 						<tr>
 							<td><%=xuhao%></td>
-							<td><input type="text" id="tc_id<%=rs.getString("id")%>" value="<%=rs.getString("tc_id")%>" onchange="updatetestcase(<%=rs.getString("id")%>)"/></td>
-							<td><input type="text" id="name<%=rs.getString("id")%>" value="<%=rs.getString("name")%>" onchange="updatetestcase(<%=rs.getString("id")%>)"/></td>
+							<td><input class="form-control" type="text" id="tc_id<%=rs.getString("id")%>" value="<%=rs.getString("tc_id")%>" onchange="updatetestcase(<%=rs.getString("id")%>)"/></td>
+							<td><input class="form-control" type="text" id="name<%=rs.getString("id")%>" value="<%=rs.getString("name")%>" onchange="updatetestcase(<%=rs.getString("id")%>)"/></td>
 							<td>
-								<textarea id="description<%=rs.getString("id")%>" onchange="updatetestcase(<%=rs.getString("id")%>)" cols=40 rows=3><%=rs.getString("description")%></textarea>
+								<textarea class="form-control" id="description<%=rs.getString("id")%>" onchange="updatetestcase(<%=rs.getString("id")%>)" cols=40 rows=3><%=rs.getString("description")%></textarea>
 								
 							
 							<td><%=rs.getString("user")%></td>
-							<td><font color="red"><a onclick="updatetestcase(<%=rs.getString("id")%>,'del')">删除</a></font></td>	
+							<td><font color="red"><a class="btn btn-danger" onclick="updatetestcase(<%=rs.getString("id")%>,'del')">删除</a></font></td>	
 							<td><%=rs.getString("new_time")%></td>
 							<td><%=rs.getString("update_time")%></td>
 						</tr>
@@ -842,7 +853,7 @@ function setSubNodeClass(el, nodeName, className)
 			<%}%>
 	
 	<%if(type.equals("tr")){%>
-			<table border=1>
+			<table  class="table table-bordered table-hover text-center">
 						<tr>
 							<td>序号</td>
 							<td>tc_id</td>
@@ -874,21 +885,25 @@ function setSubNodeClass(el, nodeName, className)
 							<a onclick="updatetestrun(<%=rs.getString("id")%>,'失败')">失败</a><br>
 							<a onclick="updatetestrun(<%=rs.getString("id")%>,'NA')">NA</a><br>
 							</td>
-							<td><input type="text" onchange="updatetestrun(<%=rs.getString("id")%>,'')" id="trdescription<%=rs.getString("id")%>" value="<%=rs.getString("description")%>"/>
+							<td><input class="form-control" type="text" onchange="updatetestrun(<%=rs.getString("id")%>,'')" id="trdescription<%=rs.getString("id")%>" value="<%=rs.getString("description")%>"/>
 							
 							<td><font size=1px><%=rs.getString("description1")%></font></td>	
 							<td><%=rs.getString("user")%></td>				
-							<td><font color="red"><a onclick="updatetestrun(<%=rs.getString("id")%>,'del')">删除</a></font></td>				
+							<td><font color="red"><a class="btn btn-danger" onclick="updatetestrun(<%=rs.getString("id")%>,'del')">删除</a></font></td>				
 							<td><%=rs.getString("update_time")%></td>
 						</tr>			
 			
 								<%}%>
 			</table>
 			<%}%>
+			<%if(type.equals("tc")){%>
+			<p class="text-danger">
 				温馨提示：<br>
 				1.在当前页面按Insert键，直接调起新增测试案例<br>
 				2.在案例编写界面，直接按Enter，直接提交新增。
-			
+			</p>
+			<%}%>
+		</div>	
 	</body>
 </html> 
 
